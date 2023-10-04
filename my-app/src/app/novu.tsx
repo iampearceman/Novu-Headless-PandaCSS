@@ -1,7 +1,7 @@
 'use client';
 
-import { HeadlessService, FetchResult, ISession } from '@novu/headless';
-import { useState, createContext } from "react";
+import { HeadlessService, FetchResult, ISession } from "@novu/headless";
+import { useState } from "react";
 
 
 
@@ -24,29 +24,27 @@ headlessService.initializeSession({
 });
 
 const Novu = () => {
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState<any[]>([]);
 
   const fetchNewNotifications = () => {
     headlessService.fetchNotifications({
-      listener: ({ data, error, isError, isFetching, isLoading, status }) => {
-        console.log({ data, error, isError, isFetching, isLoading, status });
-      },
-      onSuccess: (response) => {
-        console.log(
-          "in success of fetch notifications--->",
-          response.data,
-          response.page,
-          response.totalCount,
-          response.pageSize
-        );
-        setNotifications(response.data);
-      },
-      page: 1,
-      limit: 20 // page number to be fetched
-    });
+  listener: ({ data, error, isError, isFetching, isLoading, status }) => {
+    console.log({ data, error, isError, isFetching, isLoading, status });
+  },
+  onSuccess: (response) => {
+    console.log(
+      response.data,
+      response.page,
+      response.totalCount,
+      response.pageSize,
+    );
+    setNotifications(response.data);
+  },
+        page: 1, // page number to be fetched
+});
   };
 
-  const deleteASingleNotification = (notificationId) => {
+  const deleteASingleNotification = (notificationId: any) => {
     headlessService.removeNotification({
       listener: (result) => {
         console.log("result of removeNotification -->", result);
